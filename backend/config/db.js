@@ -9,7 +9,7 @@ const sequelize = new Sequelize(
     host: "127.0.0.1", //process.env.DB_HOST,
     port: "3300", //process.env.DB_PORT,
     dialect: 'mysql',
-    logging: false, // Set to true to see SQL queries in the console
+    logging: false, // Set to true to see SQL queries in the console 
   }
 );
 
