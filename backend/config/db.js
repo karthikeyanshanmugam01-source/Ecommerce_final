@@ -11,7 +11,7 @@ const sequelize = new Sequelize(
     dialect: 'mysql',
     logging: false, // Set to true to see SQL queries in the console 
   }
-);
+);  
 
 const connectDB = async () => {
   try {
