@@ -5,3 +5,7 @@
 3. DB (My SQL)
 4. Native App (Mobile App)
    
+
+
+# Install the npm modules 
+npm install --force // use '--force' when if not installed properly
