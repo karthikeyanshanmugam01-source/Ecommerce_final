@@ -4,15 +4,15 @@ const {User} = require('../models/user.model');
 exports.createUser = async (req, res) => {
   try {
    // Check if username already exists
-    const existingUser = await User.findOne({ where: { username } });
-    if (existingUser) {
-      return res.status(409).json({ message: 'Username already exists' });
-    }
-    // Optionally check if email already exists
-    const existingEmail = await User.findOne({ where: { email } });
-    if (existingEmail) {
-      return res.status(409).json({ message: 'Email already registered' });
-    }
+    // const existingUser = await User.findOne({ where: { username } });
+    // if (existingUser) {
+    //   return res.status(409).json({ message: 'Username already exists' });
+    // }
+    // // Optionally check if email already exists
+    // const existingEmail = await User.findOne({ where: { email } });
+    // if (existingEmail) {
+    //   return res.status(409).json({ message: 'Email already registered' });
+    // }
     //Create a new user 
     const { username, email, password_hash, client_id, bu_id, user_type } = req.body;
     const newUser = await User.create({
@@ -54,7 +54,6 @@ exports.loginUser = async (req, res) => {
         last_login: user.last_login
       }
     });
-
   } catch (error) {
     res.status(500).json({ message: 'Login error', error: error.message });
   }
