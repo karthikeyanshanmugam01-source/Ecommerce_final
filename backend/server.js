@@ -2,12 +2,16 @@
 const express = require('express');
 const {sequelize, connectDB} = require('./config/db');
 const userRoutes = require('./routes/user.routes');
-require('dotenv').config();
+//require('dotenv').config();
+require('./config');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
 
 // Create an express application instance
 const app = express();
+
+// Set the port for the server
+const PORT = process.env.PORT || 5000;
 
 //Swagger Configuration
 const swaggerOptions = {
@@ -18,12 +22,10 @@ const swaggerOptions = {
       version: '1.0.0',
       description: 'API documentation with Swagger',
     },
-    servers: [{ url: 'http://localhost:5000' }],
+    servers: [{ url: `http://localhost:${PORT}` }],
   },
-  apis: ['./routes/*.js'], // Path to your route files
+  apis: ['./routes/*.js'], // Path to your route files    
 };
-// Set the port for the server
-const PORT = process.env.PORT || 5000;
 
 //Swagger Spec
 const swaggerSpec = swaggerJsdoc(swaggerOptions);

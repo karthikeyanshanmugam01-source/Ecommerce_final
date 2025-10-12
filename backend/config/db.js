@@ -1,56 +1,51 @@
-const { Sequelize } = require('sequelize');
-require('dotenv').config();
+const { Sequelize } = require("sequelize");
+require("../config");
 
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 console.log(__dirname);
-console.log(path.join(__dirname, 'DigiCertGlobalRootCA.crt.pem'));
+console.log(path.join(__dirname, "DigiCertGlobalRootCA.crt.pem"));
 //const serverCa = fs.readFileSync(path.join(__dirname, 'DigiCertGlobalRootCA.crt.pem'));
 
-/*
-const sequelize = new Sequelize(
-   "mathi_ecom_db", // process.env.DB_NAME
-  "mathi1521@mathi-ecom-gen", // process.env.DB_USER (note: include server domain in username for Azure)
-  "Password@123", // process.env.DB_PASSWORD
-  {
-    host: "mathi-ecom-gen.mysql.database.azure.com", // process.env.DB_HOST
-    port: 3306, // Azure MySQL default port is 3306
-    dialect: 'mysql',
-    logging: false,
-    dialectOptions: {
-      ssl: {
-        ca: serverCa,
-        rejectUnauthorized: true
-      }
-    }
-  }
-);  
-*/
+const env = process.env.NODE_ENV || 'local';
 
-const sequelize = new Sequelize(
-  "mathi_ecom_db",
-  "mathi1521",
-  "Password@123",
+//Local Host
+const sequelize_local = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
   {
-    host: "mathi-ecom-gen.mysql.database.azure.com",
-    port: 3306,
-    dialect: 'mysql',
-    logging: false,
-    dialectOptions: {
-      ssl: {
-        rejectUnauthorized: true
-      }
-    }
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT, // Azure MySQL default port is 3306
+    dialect: "mysql",
   }
 );
 
+const sequelize_azureDev = new Sequelize(
+  process.env.AZURE_MYSQL_DB,
+  process.env.AZURE_MYSQL_USER,
+  process.env.AZURE_MYSQL_PWD,
+  {
+    host: process.env.AZURE_MYSQL_HOST,
+    port: process.env.AZURE_MYSQL_PORT,
+    dialect: "mysql",
+    logging: false,
+    dialectOptions: {
+      ssl: {
+        rejectUnauthorized: true,
+      },
+    },
+  }
+);
+
+const sequelize = env === "local" ? sequelize_local : sequelize_azureDev;
 const connectDB = async () => {
   try {
     await sequelize.authenticate();
-    console.log('Database connection has been established successfully.');
+    console.log("Database connection has been established successfully.");
   } catch (error) {
-    console.error('Unable to connect to the database:', error);
+    console.error("Unable to connect to the database:", error);
   }
 };
 
